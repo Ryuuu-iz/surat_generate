@@ -1,233 +1,337 @@
-/* =========================================================================
-   form_surat_perintah.css
-   Dipindahkan apa adanya dari <style> inline di pages/form_surat_perintah.php
-   ========================================================================= */
-
 * { box-sizing: border-box; }
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: #eef0f2;
-}
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: #eef0f2;
+    }
 
-.app-wrapper {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    min-height: 100vh;
-}
+    .app-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        min-height: 100vh;
+    }
 
-/* ============ KOLOM KIRI : FORM (35%) ============ */
-.form-column {
-    width: 35%;
-    min-width: 340px;
-    background: #ffffff;
-    padding: 24px;
-    overflow-y: auto;
-    max-height: 100vh;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-}
+    /* ============ KOLOM KIRI : FORM (35%) ============ */
+    .form-column {
+        width: 35%;
+        min-width: 340px;
+        background: #ffffff;
+        padding: 24px;
+        overflow-y: auto;
+        max-height: 100vh;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+    }
 
-.form-column h2 {
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 4px;
-    color: #1f2d3d;
-}
-.form-column p.subtitle {
-    font-size: 12px;
-    color: #7a8896;
-    margin-top: 0;
-    margin-bottom: 20px;
-}
+    .form-column h2 {
+        font-size: 18px;
+        margin-top: 0;
+        margin-bottom: 4px;
+        color: #1f2d3d;
+    }
+    .form-column p.subtitle {
+        font-size: 12px;
+        color: #7a8896;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
 
-.field-group {
-    margin-bottom: 18px;
-}
-.field-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: #33475b;
-    margin-bottom: 6px;
-}
-.field-group input[type="text"] {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    font-size: 13px;
-}
-.field-group input[type="text"]:focus {
-    outline: none;
-    border-color: #3a6df0;
-}
+    .field-group {
+        margin-bottom: 18px;
+    }
+    .field-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #33475b;
+        margin-bottom: 6px;
+    }
+    .field-group input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+    .field-group input[type="text"]:focus {
+        outline: none;
+        border-color: #3a6df0;
+    }
 
-.format-choice {
-    display: flex;
-    gap: 12px;
-    border: 1px solid #cbd5e0;
-    border-radius: 6px;
-    padding: 10px;
-    background: #f8fafc;
-}
-.format-choice label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    color: #33475b;
-    cursor: pointer;
-}
+    .format-choice {
+        display: flex;
+        gap: 12px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        padding: 10px;
+        background: #f8fafc;
+    }
+    .format-choice label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #33475b;
+        cursor: pointer;
+    }
 
-.btn-download {
-    width: 100%;
-    padding: 12px;
-    background: #1f6feb;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 8px;
-}
-.btn-download:hover { background: #1a5fd0; }
+    .btn-download {
+        width: 100%;
+        padding: 12px;
+        background: #1f6feb;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 8px;
+    }
+    .btn-download:hover { background: #1a5fd0; }
 
-/* ============ KOLOM KANAN : LIVE PREVIEW (65%) ============ */
-.preview-column {
-    width: 65%;
-    background: #4a4f57; /* abu-abu gelap */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    overflow-y: auto;
-    max-height: 100vh;
-}
+    /* ============ KOLOM KANAN : LIVE PREVIEW (65%) ============ */
+    .preview-column {
+        width: 65%;
+        background: #4a4f57; /* abu-abu gelap */
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 40px 20px;
+        overflow-y: auto;
+        max-height: 100vh;
+    }
 
-.paper {
-    width: 21cm;
-    min-height: 29.7cm;
-    background: #ffffff;
-    padding: 2cm 2cm 2cm 2.5cm;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.45);
-    font-family: 'Arial MT', Arial, sans-serif;
-    font-size: 12pt;
-    line-height: 1.35;
-    color: #000;
-}
+    .paper {
+        width: 21cm;
+        min-height: 29.7cm;
+        background: #ffffff;
+        padding: 2cm 2cm 2cm 2.5cm;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+        font-family: 'Arial MT', Arial, sans-serif;
+        font-size: 12pt;
+        line-height: 1.35;
+        color: #000;
+    }
 
-/* --- Kop Surat --- */
-.kop-surat {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    border-bottom: 3px double #000;
-    padding-bottom: 8px;
-    margin-bottom: 14px;
-}
-.kop-surat .logo-box {
-    width: 60px;
-    height: 60px;
-    border: 1px dashed #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 8px;
-    color: #999;
-    text-align: center;
-    flex-shrink: 0;
-}
-.kop-surat .kop-text {
-    text-align: center;
-    flex-grow: 1;
-}
-.kop-surat .kop-text .line1 {
-    font-weight: bold;
-    font-size: 13pt;
-    text-transform: uppercase;
-}
-.kop-surat .kop-text .line2 {
-    font-weight: bold;
-    font-size: 13pt;
-    text-transform: uppercase;
-}
-.kop-surat .kop-text .line3 {
-    font-weight: bold;
-    font-size: 11pt;
-    text-transform: uppercase;
-}
+    /* --- Kop Surat --- */
+    .kop-surat {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-bottom: 3px double #000;
+        padding-bottom: 8px;
+        margin-bottom: 14px;
+    }
+    .kop-surat .logo-box {
+        width: 60px;
+        height: 60px;
+        border: 1px dashed #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        color: #999;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .kop-surat .kop-text {
+        text-align: center;
+        flex-grow: 1;
+    }
+    .kop-surat .kop-text .line1 {
+        font-weight: bold;
+        font-size: 13pt;
+        text-transform: uppercase;
+    }
+    .kop-surat .kop-text .line2 {
+        font-weight: bold;
+        font-size: 13pt;
+        text-transform: uppercase;
+    }
+    .kop-surat .kop-text .line3 {
+        font-weight: bold;
+        font-size: 11pt;
+        text-transform: uppercase;
+    }
 
-/* --- Judul Surat --- */
-.judul-surat {
-    text-align: center;
-    margin-bottom: 16px;
-}
-.judul-surat .title {
-    font-weight: bold;
-    text-decoration: underline;
-    font-size: 13pt;
-}
-.judul-surat .nomor {
-    font-size: 11pt;
-    margin-top: 2px;
-}
+    /* --- Judul Surat --- */
+    .judul-surat {
+        text-align: center;
+        margin-bottom: 16px;
+    }
+    .judul-surat .title {
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 13pt;
+    }
+    .judul-surat .nomor {
+        font-size: 11pt;
+        margin-top: 2px;
+    }
 
-/* --- Tabel bayangan (label : isi) --- */
-.row-field {
-    display: flex;
-    margin-bottom: 6px;
-}
-.row-field .label {
-    width: 130px;
-    flex-shrink: 0;
-}
-.row-field .titik-dua {
-    width: 16px;
-    flex-shrink: 0;
-}
-.row-field .isi {
-    flex-grow: 1;
-}
-.row-field .isi p { margin: 0 0 4px 0; }
-.row-field .isi ul, .row-field .isi ol { margin: 0 0 4px 18px; padding: 0; }
+    /* --- Tabel bayangan (label : isi) --- */
+    .row-field {
+        display: flex;
+        margin-bottom: 6px;
+    }
+    .row-field .label {
+        width: 130px;
+        flex-shrink: 0;
+    }
+    .row-field .titik-dua {
+        width: 16px;
+        flex-shrink: 0;
+    }
+    .row-field .isi {
+        flex-grow: 1;
+    }
+    .row-field .isi p { margin: 0 0 4px 0; }
+    .row-field .isi ul, .row-field .isi ol { margin: 0 0 4px 18px; padding: 0; }
 
-.diperintahkan {
-    text-align: center;
-    font-weight: bold;
-    margin: 14px 0;
-    letter-spacing: 1px;
-}
+    .personnel-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 12px;
+    }
+    .personnel-item {
+        border: 1px solid #cbd5e0;
+        border-radius: 8px;
+        padding: 12px;
+        background: #f8fafc;
+    }
+    .personnel-item .personnel-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .personnel-item .personnel-row label {
+        font-size: 12px;
+        color: #33475b;
+        margin-bottom: 2px;
+    }
+    .personnel-item .personnel-row input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+    .personnel-item .personnel-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+    .personnel-item button.remove-personnel {
+        padding: 6px 10px;
+        border: 1px solid #d9534f;
+        background: #fff;
+        color: #d9534f;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .personnel-item button.remove-personnel:hover {
+        background: #fbeaea;
+    }
 
-.selesai { margin-top: 4px; margin-bottom: 20px; }
+    .list-field {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 12px;
+    }
+    .dasar-item {
+        border: 1px solid #cbd5e0;
+        border-radius: 8px;
+        padding: 12px;
+        background: #f8fafc;
+    }
+    .dasar-item .personnel-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .dasar-item .personnel-row input[type="text"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        font-size: 13px;
+    }
+    .dasar-item .dasar-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+    .dasar-item button.remove-dasar {
+        padding: 6px 10px;
+        border: 1px solid #d9534f;
+        background: #fff;
+        color: #d9534f;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .dasar-item button.remove-dasar:hover {
+        background: #fbeaea;
+    }
+    .dasar-list {
+        margin: 0;
+        padding-left: 18px;
+    }
+    .dasar-list li {
+        margin-bottom: 8px;
+    }
 
-/* --- Blok tanggal & ttd --- */
-.blok-penutup {
-    display: flex;
-    justify-content: flex-end;
-}
-.kolom-ttd {
-    width: 60%;
-    text-align: left;
-}
-.kolom-ttd .baris-tanggal .row-field .label { width: 110px; }
-.jabatan-ttd { margin-top: 4px; }
-.ruang-ttd { height: 70px; }
-.nama-ttd { font-weight: bold; text-decoration: underline; }
-.pangkat-ttd {}
+    .kepada-pair {
+        margin-bottom: 8px;
+    }
+    .kepada-name {
+        display: inline-block;
+    }
+    .kepada-name.underlined {
+        border-bottom: 1px solid #000;
+        padding-bottom: 1px;
+    }
+    .kepada-jabatan {
+        display: block;
+        margin-top: 2px;
+    }
 
-.tembusan-box {
-    margin-top: 24px;
-    font-size: 11pt;
-}
-.tembusan-box .judul-tembusan {
-    font-weight: bold;
-    margin-bottom: 4px;
-}
-.tembusan-box .isi-tembusan ol,
-.tembusan-box .isi-tembusan ul {
-    margin: 0 0 0 18px;
-    padding: 0;
-}
+    .diperintahkan {
+        text-align: center;
+        font-weight: bold;
+        margin: 14px 0;
+        letter-spacing: 1px;
+    }
+
+    .selesai { margin-top: 4px; margin-bottom: 20px; }
+
+    /* --- Blok tanggal & ttd --- */
+    .blok-penutup {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .kolom-ttd {
+        width: 60%;
+        text-align: left;
+    }
+    .kolom-ttd .baris-tanggal .row-field .label { width: 110px; }
+    .jabatan-ttd { margin-top: 4px; }
+    .ruang-ttd { height: 70px; }
+    .nama-ttd { font-weight: bold; text-decoration: underline; }
+    .pangkat-ttd {}
+
+    .tembusan-box {
+        margin-top: 24px;
+        font-size: 11pt;
+    }
+    .tembusan-box .judul-tembusan {
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+    .tembusan-box .isi-tembusan ol,
+    .tembusan-box .isi-tembusan ul {
+        margin: 0 0 0 18px;
+        padding: 0;
+    }

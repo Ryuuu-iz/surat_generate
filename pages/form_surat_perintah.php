@@ -16,8 +16,8 @@
 
 <!-- CKEditor 5 (Classic Build) via CDN -->
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
 <link rel="stylesheet" href="../assets/css/form_surat_perintah.css">
+
 </head>
 <body>
 
@@ -196,91 +196,6 @@
 
         </div>
     </div>
-</div>
-
-    <!-- ======================= KOLOM KANAN : LIVE PREVIEW ======================= -->
-    <div class="preview-column">
-        <div class="paper">
-
-            <!-- Kop Surat -->
-            <div class="kop-surat">
-                <div class="logo-box">LOGO<br>TRIBRATA</div>
-                <div class="kop-text">
-                    <div class="line1">Kepolisian Negara Republik Indonesia</div>
-                    <div class="line2">Daerah Sulawesi Selatan</div>
-                    <div class="line3">Bidang Teknologi Informasi Komunikasi</div>
-                </div>
-            </div>
-
-            <!-- Judul -->
-            <div class="judul-surat">
-                <div class="title">SURAT PERINTAH</div>
-                <div class="nomor">Nomor: <span id="prev_nomor_surat">…</span></div>
-            </div>
-
-            <!-- Pertimbangan -->
-            <div class="row-field">
-                <div class="label">Pertimbangan</div>
-                <div class="titik-dua">:</div>
-                <div class="isi" id="prev_pertimbangan"><p>…</p></div>
-            </div>
-
-            <!-- Dasar -->
-            <div class="row-field">
-                <div class="label">Dasar</div>
-                <div class="titik-dua">:</div>
-                <div class="isi" id="prev_dasar"><p>…</p></div>
-            </div>
-
-            <div class="diperintahkan">DIPERINTAHKAN</div>
-
-            <!-- Kepada -->
-            <div class="row-field">
-                <div class="label">Kepada</div>
-                <div class="titik-dua">:</div>
-                <div class="isi" id="prev_kepada"><p>…</p></div>
-            </div>
-
-            <!-- Untuk -->
-            <div class="row-field">
-                <div class="label">Untuk</div>
-                <div class="titik-dua">:</div>
-                <div class="isi" id="prev_untuk"><p>…</p></div>
-            </div>
-
-            <div class="selesai">Selesai.</div>
-
-            <!-- Blok penutup: tanggal & ttd -->
-            <div class="blok-penutup">
-                <div class="kolom-ttd">
-                    <div class="baris-tanggal">
-                        <div class="row-field">
-                            <div class="label">Dikeluarkan di</div>
-                            <div class="titik-dua">:</div>
-                            <div class="isi">Makassar</div>
-                        </div>
-                        <div class="row-field">
-                            <div class="label">Pada tanggal</div>
-                            <div class="titik-dua">:</div>
-                            <div class="isi" id="prev_bulan_tahun">…</div>
-                        </div>
-                    </div>
-
-                    <div class="jabatan-ttd" id="prev_jabatan">…</div>
-                    <div class="ruang-ttd"></div>
-                    <div class="nama-ttd" id="prev_nama">…</div>
-                    <div class="pangkat-ttd" id="prev_pangkat_nrp">…</div>
-                </div>
-            </div>
-
-            <!-- Tembusan -->
-            <div class="tembusan-box">
-                <div class="judul-tembusan">Tembusan:</div>
-                <div class="isi-tembusan" id="prev_tembusan"><p>…</p></div>
-            </div>
-
-        </div>
-    </div>
 
 </div>
 
@@ -288,7 +203,7 @@
 /* =========================================================================
    Inisialisasi CKEditor 5 untuk semua field paragraf/rich-text
    ========================================================================= */
-const richFields = ['pertimbangan', 'dasar', 'kepada', 'untuk', 'tembusan'];
+const richFields = ['pertimbangan', 'tembusan'];
 const editors = {}; // menyimpan instance CKEditor per field
 
 richFields.forEach(function (fieldName) {
@@ -314,6 +229,295 @@ richFields.forEach(function (fieldName) {
         });
 });
 
+function createPersonnelItem(name = '', jabatan = '') {
+    const item = document.createElement('div');
+    item.className = 'personnel-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Nama, Pangkat/Gol, NIP/NRP</label>
+            <input type="text" name="kepada_name[]" value="${name}" placeholder="Contoh: PENATA TK I RUSLAN, S.KOM NIP 197907202006041004" oninput="updatePreview()">
+        </div>
+        <div class="personnel-row">
+            <label>Jabatan / Kesatuan</label>
+            <input type="text" name="kepada_jabatan[]" value="${jabatan}" placeholder="Contoh: KAUR INTI SUBBID TEKINFO BID TIK POLDA SULSEL" oninput="updatePreview()">
+        </div>
+        <div class="personnel-actions">
+            <button type="button" class="remove-personnel" onclick="removePersonnelItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addPersonnelItem() {
+    const list = document.getElementById('kepada_personnel_list');
+    const item = createPersonnelItem();
+    list.appendChild(item);
+    updatePersonnelButtons();
+    updatePreview();
+}
+
+function createUntukItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Poin</label>
+            <input type="text" name="untuk_item[]" value="${escapeHtml(text)}" placeholder="Contoh: melaporkan hasil pelaksanaannya kepada ..." oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeUntukItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addUntukItem(text = '') {
+    const list = document.getElementById('untuk_list');
+    const item = createUntukItem(text);
+    list.appendChild(item);
+    updateUntukButtons();
+    updatePreview();
+}
+
+function removePersonnelItem(button) {
+    const item = button.closest('.personnel-item');
+    if (item) {
+        item.remove();
+        updatePersonnelButtons();
+        updatePreview();
+    }
+}
+
+function removeUntukItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateUntukButtons();
+        updatePreview();
+    }
+}
+
+function updatePersonnelButtons() {
+    const items = document.querySelectorAll('.personnel-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-personnel');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function updateUntukButtons() {
+    const items = document.querySelectorAll('#untuk_list .dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function createDasarItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Dasar</label>
+            <input type="text" name="dasar_item[]" value="${escapeHtml(text)}" placeholder="Contoh: Undang-Undang Nomor 2 Tahun 2002 tentang Kepolisian Negara Republik Indonesia;" oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeDasarItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function createTembusanItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Tembusan</label>
+            <input type="text" name="tembusan_item[]" value="${escapeHtml(text)}" placeholder="Contoh: Kapolda Sulsel" oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeTembusanItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addTembusanItem(text = '') {
+    const list = document.getElementById('tembusan_list');
+    const item = createTembusanItem(text);
+    list.appendChild(item);
+    updateTembusanButtons();
+    updatePreview();
+}
+
+function removeTembusanItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateTembusanButtons();
+        updatePreview();
+    }
+}
+
+function updateTembusanButtons() {
+    const items = document.querySelectorAll('#tembusan_list .dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function renderTembusanField() {
+    const items = Array.from(document.querySelectorAll('input[name="tembusan_item[]"]'))
+        .map(el => el.value.trim())
+        .filter(value => value !== '');
+    const html = items.length
+        ? `<ol class="dasar-list">${items.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ol>`
+        : '<p>…</p>';
+
+    document.getElementById('prev_tembusan').innerHTML = html;
+    document.getElementById('tembusan_raw').value = html;
+}
+
+function addDasarItem(text = '') {
+    const list = document.getElementById('dasar_list');
+    const item = createDasarItem(text);
+    list.appendChild(item);
+    updateDasarButtons();
+    updatePreview();
+}
+
+function removeDasarItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateDasarButtons();
+        updatePreview();
+    }
+}
+
+function updateDasarButtons() {
+    const items = document.querySelectorAll('.dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function createUntukItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Poin</label>
+            <input type="text" name="untuk_item[]" value="${escapeHtml(text)}" placeholder="Contoh: melaporkan hasil pelaksanaannya kepada ..." oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeUntukItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addUntukItem(text = '') {
+    const list = document.getElementById('untuk_list');
+    const item = createUntukItem(text);
+    list.appendChild(item);
+    updateUntukButtons();
+    updatePreview();
+}
+
+function removeUntukItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateUntukButtons();
+        updatePreview();
+    }
+}
+
+function updateUntukButtons() {
+    const items = document.querySelectorAll('#untuk_list .dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function cleanDasarItemText(text) {
+    return text.replace(/^\s*\d+[\.)]?\s*/u, '');
+}
+
+function renderDasarField() {
+    const items = Array.from(document.querySelectorAll('input[name="dasar_item[]"]'))
+        .map(el => cleanDasarItemText(el.value.trim()))
+        .filter(value => value !== '');
+    const html = items.length
+        ? `<ol class="dasar-list">${items.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ol>`
+        : '<p>…</p>';
+
+    document.getElementById('prev_dasar').innerHTML = html;
+    document.getElementById('dasar_raw').value = html;
+}
+
+function renderUntukField() {
+    const items = Array.from(document.querySelectorAll('input[name="untuk_item[]"]'))
+        .map(el => el.value.trim())
+        .filter(value => value !== '');
+    const html = items.length
+        ? `<ol class="dasar-list">${items.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ol>`
+        : '<p>…</p>';
+
+    document.getElementById('prev_untuk').innerHTML = html;
+    document.getElementById('untuk_raw').value = html;
+}
+
+function renderKepadaField() {
+    const names = Array.from(document.querySelectorAll('input[name="kepada_name[]"]')).map(el => el.value.trim());
+    const jabatan = Array.from(document.querySelectorAll('input[name="kepada_jabatan[]"]')).map(el => el.value.trim());
+    const underline = document.getElementById('underline_kepada').checked;
+    const paragraphs = [];
+
+    for (let i = 0; i < names.length; i++) {
+        if (names[i] === '' && jabatan[i] === '') {
+            continue;
+        }
+        const escapedName = names[i] !== '' ? escapeHtml(names[i]) : '…';
+        const escapedJabatan = jabatan[i] !== '' ? escapeHtml(jabatan[i]) : '';
+        const nameLine = underline
+            ? `<span class="kepada-name"><u>${escapedName}</u></span>`
+            : `<span class="kepada-name">${escapedName}</span>`;
+        const jabatanLine = escapedJabatan ? `<br><span class="kepada-jabatan">${escapedJabatan}</span>` : '';
+        paragraphs.push(`<p class="kepada-pair">${nameLine}${jabatanLine}</p>`);
+    }
+
+    const html = paragraphs.length ? paragraphs.join('') : '<p>…</p>';
+    const preview = document.getElementById('prev_kepada');
+    preview.innerHTML = html;
+    preview.classList.toggle('underline-kepada', underline);
+    document.getElementById('kepada_raw').value = html;
+}
+
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 // Menyalin HTML dari CKEditor ke textarea tersembunyi agar ikut ter-submit via form POST biasa
 function syncHiddenTextarea(fieldName) {
     const raw = document.getElementById(fieldName + '_raw');
@@ -335,16 +539,32 @@ function updatePreview() {
 
     // Field rich text -> innerHTML dari CKEditor (agar bold/italic/list ikut tampil)
     setRichHtml('prev_pertimbangan', 'pertimbangan');
-    setRichHtml('prev_dasar', 'dasar');
-    setRichHtml('prev_kepada', 'kepada');
-    setRichHtml('prev_untuk', 'untuk');
-    setRichHtml('prev_tembusan', 'tembusan');
+    renderDasarField();
+    renderKepadaField();
+    renderUntukField();
+    renderTembusanField();
 }
 
 function setPlainText(previewId, value) {
     const el = document.getElementById(previewId);
     el.textContent = value.trim() !== '' ? value : '…';
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelectorAll('#kepada_personnel_list .personnel-item').length === 0) {
+        addPersonnelItem();
+    }
+    if (document.querySelectorAll('#dasar_list .dasar-item').length === 0) {
+        addDasarItem();
+    }
+    if (document.querySelectorAll('#untuk_list .dasar-item').length === 0) {
+        addUntukItem();
+    }
+    if (document.querySelectorAll('#tembusan_list .dasar-item').length === 0) {
+        addTembusanItem();
+    }
+    updatePreview();
+});
 
 function setRichHtml(previewId, fieldName) {
     const el = document.getElementById(previewId);
