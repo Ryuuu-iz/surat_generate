@@ -1,12 +1,4 @@
 <?php
-/**
- * form_surat_ijin.php
- * -----------------------------------------------------------------
- * Form input untuk pembuatan "Surat Izin" + Live Preview realtime.
- * Tidak menggunakan database — semua data dikirim via POST ke
- * proses_surat_ijin.php saat tombol unduh ditekan.
- * -----------------------------------------------------------------
- */
 ?>
 <!DOCTYPE html>
 <html lang="id">

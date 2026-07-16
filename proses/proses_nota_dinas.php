@@ -1,19 +1,4 @@
 <?php
-/**
- * proses_nota_dinas.php
- * -----------------------------------------------------------------
- * Backend pemroses untuk jenis surat "Nota Dinas" (Surat Dinas).
- * Alur:
- *   1. Ambil data dari form (POST).
- *   2. Konversi HTML dari CKEditor -> sintaks RTF asli (htmlToRtf()).
- *   3. Replace semua placeholder ${...} pada template master .rtf.
- *   4. Jika format_output = rtf  -> file RTF langsung dikirim ke browser.
- *      Jika format_output = pdf -> file RTF sementara dibuat lalu
- *      dikonversi ke PDF asli via COM Word.Application (Format 17),
- *      dengan fallback otomatis ke LibreOffice lalu ke RTF jika gagal.
- * -----------------------------------------------------------------
- */
-
 error_reporting(E_ALL);
 ini_set('display_errors', 0); // jangan tampilkan warning ke output file yang sedang di-stream
 

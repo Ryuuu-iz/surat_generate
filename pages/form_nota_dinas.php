@@ -1,16 +1,4 @@
 <?php
-/**
- * form_nota_dinas.php
- * -----------------------------------------------------------------
- * Form input untuk pembuatan "Nota Dinas" (Surat Dinas) + Live Preview
- * realtime. Tidak menggunakan database — semua data dikirim via POST
- * ke proses_nota_dinas.php saat tombol unduh ditekan.
- *
- * Placeholder pada templates/surat_dinas.rtf:
- *   ${nomor_surat} ${kepada} ${dari} ${hal} ${rujukan} ${isi}
- *   ${jabatan} ${nama} ${pangkat_nrp}
- * -----------------------------------------------------------------
- */
 ?>
 <!DOCTYPE html>
 <html lang="id">

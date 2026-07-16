@@ -1,12 +1,4 @@
 <?php
-/**
- * form_surat_perintah.php
- * -----------------------------------------------------------------
- * Form input untuk pembuatan "Surat Perintah" + Live Preview realtime.
- * Tidak menggunakan database — semua data dikirim via POST ke
- * proses_surat_perintah.php saat tombol unduh ditekan.
- * -----------------------------------------------------------------
- */
 ?>
 <!DOCTYPE html>
 <html lang="id">
