@@ -136,12 +136,16 @@
 
             <!-- Kop Surat -->
             <div class="kop-surat">
-                <div class="logo-box">LOGO<br>TRIBRATA</div>
                 <div class="kop-text">
                     <div class="line1">Kepolisian Negara Republik Indonesia</div>
                     <div class="line2">Daerah Sulawesi Selatan</div>
                     <div class="line3">Bidang Teknologi Informasi Komunikasi</div>
                 </div>
+            </div>
+
+            <!-- Logo -->
+            <div class="logo-kop">
+                <img src="../assets/img/logo/logo-polri-bnw.png" alt="Logo Polri">
             </div>
 
             <!-- Judul -->

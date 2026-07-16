@@ -121,28 +121,11 @@ body {
 
 /* --- Kop Surat --- */
 .kop-surat {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    border-bottom: 3px double #000;
-    padding-bottom: 8px;
-    margin-bottom: 14px;
-}
-.kop-surat .logo-box {
-    width: 60px;
-    height: 60px;
-    border: 1px dashed #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 8px;
-    color: #999;
-    text-align: center;
-    flex-shrink: 0;
+    text-align: left;
+    margin-bottom: 4px;
 }
 .kop-surat .kop-text {
-    text-align: center;
-    flex-grow: 1;
+    display: inline-block;
 }
 .kop-surat .kop-text .line1 {
     font-weight: bold;
@@ -153,11 +136,23 @@ body {
     font-weight: bold;
     font-size: 13pt;
     text-transform: uppercase;
+    text-align: center;
 }
 .kop-surat .kop-text .line3 {
     font-weight: bold;
-    font-size: 11pt;
+    font-size: 12pt;
     text-transform: uppercase;
+    text-decoration: underline;
+}
+
+/* --- Logo (di bawah kop teks, sebelum judul) --- */
+.logo-kop {
+    text-align: center;
+    margin: 16px 0 12px;
+}
+.logo-kop img {
+    height: 95px;
+    width: auto;
 }
 
 /* --- Judul Surat --- */
