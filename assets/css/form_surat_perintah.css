@@ -117,42 +117,42 @@
     /* --- Kop Surat --- */
     .kop-surat {
         display: flex;
-        align-items: center;
-        gap: 14px;
-        border-bottom: 3px double #000;
-        padding-bottom: 8px;
+        flex-direction: column;
         margin-bottom: 14px;
-    }
-    .kop-surat .logo-box {
-        width: 60px;
-        height: 60px;
-        border: 1px dashed #999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 8px;
-        color: #999;
-        text-align: center;
-        flex-shrink: 0;
     }
     .kop-surat .kop-text {
         text-align: center;
-        flex-grow: 1;
+        padding-bottom: 8px;
+        width: fit-content;   /* ← ini saja yang ditambahkan */
     }
     .kop-surat .kop-text .line1 {
-        font-weight: bold;
+        font-weight: normal;
         font-size: 13pt;
         text-transform: uppercase;
     }
     .kop-surat .kop-text .line2 {
-        font-weight: bold;
+        font-weight: normal;
         font-size: 13pt;
         text-transform: uppercase;
     }
     .kop-surat .kop-text .line3 {
-        font-weight: bold;
-        font-size: 11pt;
+        font-weight: normal;
+        font-size: 12pt;
         text-transform: uppercase;
+        text-decoration: underline;
+    }
+    .kop-surat .logo-box {
+        width: 64px;
+        height: 64px;
+        margin: 8px auto 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .kop-surat .logo-box img {
+        max-width: 100%;
+        max-height: 100%;
     }
 
     /* --- Judul Surat --- */
@@ -161,13 +161,15 @@
         margin-bottom: 16px;
     }
     .judul-surat .title {
-        font-weight: bold;
+        font-weight: normal;
         text-decoration: underline;
         font-size: 13pt;
     }
     .judul-surat .nomor {
         font-size: 11pt;
         margin-top: 2px;
+        display: inline-block;
+        text-decoration: underline;
     }
 
     /* --- Tabel bayangan (label : isi) --- */
@@ -187,7 +189,38 @@
         flex-grow: 1;
     }
     .row-field .isi p { margin: 0 0 4px 0; }
-    .row-field .isi ul, .row-field .isi ol { margin: 0 0 4px 18px; padding: 0; }
+    .row-field .isi ul, .row-field .isi ol { margin: 0 0 4px 0; padding: 0 0 0 20px; }
+
+    /* Varian label sempit menyesuaikan teks (mis. Dikeluarkan di / Pada tanggal) */
+    .row-field.tight .label {
+        width: auto;
+        margin-right: 2px;
+        flex-shrink: 0;
+    }
+    .row-field.tight .titik-dua {
+        width: auto;
+        margin-right: 4px;
+    }
+
+    /* Varian rapat: label & isi menyatu tanpa kolom lebar tetap (mis. Pertimbangan) */
+    .row-field.compact {
+        display: block;
+    }
+    .row-field.compact .label {
+        display: inline;
+        width: auto;
+        font-weight: normal;
+    }
+    .row-field.compact .titik-dua {
+        display: none;
+    }
+    .row-field.compact .isi {
+        display: inline;
+    }
+    .row-field.compact .isi p {
+        display: inline;
+        margin: 0;
+    }
 
     .personnel-list {
         display: flex;
@@ -300,7 +333,7 @@
 
     .diperintahkan {
         text-align: center;
-        font-weight: bold;
+        font-weight: normal;
         margin: 14px 0;
         letter-spacing: 1px;
     }
@@ -316,18 +349,27 @@
         width: 60%;
         text-align: left;
     }
-    .kolom-ttd .baris-tanggal .row-field .label { width: 110px; }
-    .jabatan-ttd { margin-top: 4px; }
+    .kolom-ttd .baris-tanggal .row-field { align-items: center; }
+    .kolom-ttd .baris-tanggal .row-field.compact .label { width: auto; }
+    .kolom-ttd .baris-tanggal .isi.underline-isi { text-decoration: underline; }
+    .qr-box {
+        width: 16px;
+        height: 16px;
+        border: 1px solid #000;
+        margin-left: 10px;
+        flex-shrink: 0;
+    }
+    .jabatan-ttd { margin-top: 4px; text-align: center; }
     .ruang-ttd { height: 70px; }
-    .nama-ttd { font-weight: bold; text-decoration: underline; }
-    .pangkat-ttd {}
+    .nama-ttd { font-weight: normal; text-decoration: underline; text-align: center; }
+    .pangkat-ttd { text-align: center; }
 
     .tembusan-box {
         margin-top: 24px;
         font-size: 11pt;
     }
     .tembusan-box .judul-tembusan {
-        font-weight: bold;
+        font-weight: normal;
         margin-bottom: 4px;
     }
     .tembusan-box .isi-tembusan ol,

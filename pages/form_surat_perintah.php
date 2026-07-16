@@ -48,10 +48,6 @@
             </div>
 
             <div class="field-group">
-                <label><input type="checkbox" id="underline_kepada" name="underline_kepada" value="1" onchange="updatePreview()"> Garis bawah nama</label>
-            </div>
-
-            <div class="field-group">
                 <button type="button" class="btn-download" style="width:auto; padding:10px 12px; margin:0;" onclick="addPersonnelItem()">+ Tambah Personel</button>
             </div>
 
@@ -111,12 +107,12 @@
 
             <!-- Kop Surat -->
             <div class="kop-surat">
-                <div class="logo-box">LOGO<br>TRIBRATA</div>
                 <div class="kop-text">
                     <div class="line1">Kepolisian Negara Republik Indonesia</div>
                     <div class="line2">Daerah Sulawesi Selatan</div>
                     <div class="line3">Bidang Teknologi Informasi Komunikasi</div>
                 </div>
+                <div class="logo-box"><img src="../assets/img/logo/logo-polri-bnw.png" alt="Logo Tribrata"></div>
             </div>
 
             <!-- Judul -->
@@ -161,15 +157,16 @@
             <div class="blok-penutup">
                 <div class="kolom-ttd">
                     <div class="baris-tanggal">
-                        <div class="row-field">
+                        <div class="row-field tight">
                             <div class="label">Dikeluarkan di</div>
                             <div class="titik-dua">:</div>
                             <div class="isi">Makassar</div>
+                            <div class="qr-box"></div>
                         </div>
-                        <div class="row-field">
+                        <div class="row-field tight">
                             <div class="label">Pada tanggal</div>
                             <div class="titik-dua">:</div>
-                            <div class="isi" id="prev_bulan_tahun">…</div>
+                            <div class="isi underline-isi" id="prev_bulan_tahun">…</div>
                         </div>
                     </div>
 
@@ -221,7 +218,7 @@ richFields.forEach(function (fieldName) {
         });
 });
 
-function createPersonnelItem(name = '', jabatan = '') {
+function createPersonnelItem(name = '', jabatan = '', underline = false) {
     const item = document.createElement('div');
     item.className = 'personnel-item';
     item.innerHTML = `
@@ -232,6 +229,9 @@ function createPersonnelItem(name = '', jabatan = '') {
         <div class="personnel-row">
             <label>Jabatan / Kesatuan</label>
             <input type="text" name="kepada_jabatan[]" value="${jabatan}" placeholder="Contoh: KAUR INTI SUBBID TEKINFO BID TIK POLDA SULSEL" oninput="updatePreview()">
+        </div>
+        <div class="personnel-row">
+            <label><input type="checkbox" name="kepada_underline[]" value="1" ${underline ? 'checked' : ''} onchange="updatePreview()"> Garis bawah nama</label>
         </div>
         <div class="personnel-actions">
             <button type="button" class="remove-personnel" onclick="removePersonnelItem(this)">Hapus</button>
@@ -478,8 +478,8 @@ function renderUntukField() {
 function renderKepadaField() {
     const names = Array.from(document.querySelectorAll('input[name="kepada_name[]"]')).map(el => el.value.trim());
     const jabatan = Array.from(document.querySelectorAll('input[name="kepada_jabatan[]"]')).map(el => el.value.trim());
-    const underline = document.getElementById('underline_kepada').checked;
-    const paragraphs = [];
+    const underlines = Array.from(document.querySelectorAll('input[name="kepada_underline[]"]')).map(el => el.checked);
+    const items = [];
 
     for (let i = 0; i < names.length; i++) {
         if (names[i] === '' && jabatan[i] === '') {
@@ -487,17 +487,18 @@ function renderKepadaField() {
         }
         const escapedName = names[i] !== '' ? escapeHtml(names[i]) : '…';
         const escapedJabatan = jabatan[i] !== '' ? escapeHtml(jabatan[i]) : '';
-        const nameLine = underline
-            ? `<span class="kepada-name"><u>${escapedName}</u></span>`
+        const nameLine = underlines[i]
+            ? `<span class="kepada-name underlined"><u>${escapedName}</u></span>`
             : `<span class="kepada-name">${escapedName}</span>`;
         const jabatanLine = escapedJabatan ? `<br><span class="kepada-jabatan">${escapedJabatan}</span>` : '';
-        paragraphs.push(`<p class="kepada-pair">${nameLine}${jabatanLine}</p>`);
+        items.push(`${nameLine}${jabatanLine}`);
     }
 
-    const html = paragraphs.length ? paragraphs.join('') : '<p>…</p>';
+    const html = items.length
+        ? `<ol class="dasar-list">${items.map(item => `<li>${item}</li>`).join('')}</ol>`
+        : '<p>…</p>';
     const preview = document.getElementById('prev_kepada');
     preview.innerHTML = html;
-    preview.classList.toggle('underline-kepada', underline);
     document.getElementById('kepada_raw').value = html;
 }
 
@@ -558,11 +559,27 @@ document.addEventListener('DOMContentLoaded', function () {
     updatePreview();
 });
 
+function stripFormattingForPreview(html) {
+    const container = document.createElement('div');
+    container.innerHTML = html || '';
+
+    container.querySelectorAll('strong, b, em, i, u, span, a').forEach(function (node) {
+        const parent = node.parentNode;
+        while (node.firstChild) {
+            parent.insertBefore(node.firstChild, node);
+        }
+        parent.removeChild(node);
+    });
+
+    return container.innerHTML;
+}
+
 function setRichHtml(previewId, fieldName) {
     const el = document.getElementById(previewId);
     if (editors[fieldName]) {
         const data = editors[fieldName].getData();
-        el.innerHTML = data.trim() !== '' ? data : '<p>…</p>';
+        const sanitized = stripFormattingForPreview(data);
+        el.innerHTML = sanitized.trim() !== '' ? sanitized : '<p>…</p>';
     }
 }
 </script>
