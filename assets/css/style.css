@@ -20,6 +20,15 @@ body {
     min-height: 100%;
     margin: 0;
     padding: 0;
+
+    /* Hide scrollbar */
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE & Edge lama */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Edge, Safari */
 }
 
 body {
@@ -41,7 +50,11 @@ img { display: block; max-width: 100%; }
     top: 0;
     z-index: 50;
     width: 100%;
-    background: transparent;
+    background: var(--navy-950);
+}
+
+.site-header.scrolled {
+    background: var(--navy-950);
 }
 
 .site-header__inner {
