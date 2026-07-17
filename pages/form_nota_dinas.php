@@ -59,6 +59,19 @@
             </div>
 
             <div class="field-group">
+                <label for="tembusan">Tembusan</label>
+                <div id="tembusan">
+                    <ol>
+                        <li>Wakapolda Sulsel.</li>
+                        <li>Irwasda Polda Sulsel.</li>
+                        <li>Karorena Polda Sulsel.</li>
+                        <li>Kabidkeu Polda Sulsel</li>
+                    </ol>
+                </div>
+                <textarea name="tembusan" id="tembusan_raw" style="display:none;"></textarea>
+            </div>
+
+            <div class="field-group">
                 <label for="jabatan">Jabatan Penandatangan</label>
                 <input type="text" id="jabatan" name="jabatan"
                        placeholder="Contoh: KEPALA BIDANG TEKNOLOGI INFORMASI KOMUNIKASI" oninput="updatePreview()">
@@ -162,17 +175,10 @@
                 </div>
             </div>
 
-            <!-- Tembusan (tetap/statis, sudah baku dalam template) -->
+            <!-- Tembusan (dinamis, mengikuti isian form) -->
             <div class="tembusan-box">
                 <div class="judul-tembusan">Tembusan:</div>
-                <div class="isi-tembusan">
-                    <ol>
-                        <li>Wakapolda Sulsel.</li>
-                        <li>Irwasda Polda Sulsel.</li>
-                        <li>Karorena Polda Sulsel.</li>
-                        <li>Kabidkeu Polda Sulsel</li>
-                    </ol>
-                </div>
+                <div class="isi-tembusan" id="prev_tembusan"><ol><li>…</li></ol></div>
             </div>
 
         </div>
@@ -184,7 +190,7 @@
 /* =========================================================================
    Inisialisasi CKEditor 5 untuk field paragraf/rich-text (bisa berisi list)
    ========================================================================= */
-const richFields = ['rujukan', 'isi'];
+const richFields = ['rujukan', 'isi', 'tembusan'];
 const editors = {}; // menyimpan instance CKEditor per field
 
 richFields.forEach(function (fieldName) {
@@ -234,6 +240,7 @@ function updatePreview() {
     // Field rich text -> innerHTML dari CKEditor (agar bold/italic/list ikut tampil)
     setRichHtml('prev_rujukan', 'rujukan');
     setRichHtml('prev_isi', 'isi');
+    setRichHtml('prev_tembusan', 'tembusan');
 }
 
 function setPlainText(previewId, value) {
