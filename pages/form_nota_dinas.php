@@ -48,27 +48,15 @@
 
             <div class="field-group">
                 <label for="rujukan">1. Rujukan</label>
-                <div id="rujukan"></div>
+                <div class="list-field" id="rujukan_list"></div>
                 <textarea name="rujukan" id="rujukan_raw" style="display:none;"></textarea>
+                <button type="button" class="btn-download" style="width:auto; padding:10px 12px; margin:8px 0 0 0;" onclick="addRujukanItem()">+ Tambah Rujukan</button>
             </div>
 
             <div class="field-group">
                 <label for="isi">2. Isi</label>
                 <div id="isi"></div>
                 <textarea name="isi" id="isi_raw" style="display:none;"></textarea>
-            </div>
-
-            <div class="field-group">
-                <label for="tembusan">Tembusan</label>
-                <div id="tembusan">
-                    <ol>
-                        <li>Wakapolda Sulsel.</li>
-                        <li>Irwasda Polda Sulsel.</li>
-                        <li>Karorena Polda Sulsel.</li>
-                        <li>Kabidkeu Polda Sulsel</li>
-                    </ol>
-                </div>
-                <textarea name="tembusan" id="tembusan_raw" style="display:none;"></textarea>
             </div>
 
             <div class="field-group">
@@ -87,6 +75,13 @@
                 <label for="pangkat_nrp">Pangkat / NRP Penandatangan</label>
                 <input type="text" id="pangkat_nrp" name="pangkat_nrp"
                        placeholder="Contoh: AKBP NRP 12345678" oninput="updatePreview()">
+            </div>
+
+            <div class="field-group">
+                <label for="tembusan">Tembusan</label>
+                <div class="list-field" id="tembusan_list"></div>
+                <textarea name="tembusan" id="tembusan_raw" style="display:none;"></textarea>
+                <button type="button" class="btn-download" style="width:auto; padding:10px 12px; margin:8px 0 0 0;" onclick="addTembusanItem()">+ Tambah Tembusan</button>
             </div>
 
             <div class="field-group">
@@ -175,10 +170,10 @@
                 </div>
             </div>
 
-            <!-- Tembusan (dinamis, mengikuti isian form) -->
+            <!-- Tembusan -->
             <div class="tembusan-box">
                 <div class="judul-tembusan">Tembusan:</div>
-                <div class="isi-tembusan" id="prev_tembusan"><ol><li>…</li></ol></div>
+                <div class="isi-tembusan" id="prev_tembusan"><p>…</p></div>
             </div>
 
         </div>
@@ -190,7 +185,7 @@
 /* =========================================================================
    Inisialisasi CKEditor 5 untuk field paragraf/rich-text (bisa berisi list)
    ========================================================================= */
-const richFields = ['rujukan', 'isi', 'tembusan'];
+const richFields = ['isi'];
 const editors = {}; // menyimpan instance CKEditor per field
 
 richFields.forEach(function (fieldName) {
@@ -224,6 +219,141 @@ function syncHiddenTextarea(fieldName) {
     }
 }
 
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/* =========================================================================
+   Rujukan — daftar tambah/hapus. Item pertama tampil mengikuti huruf "a."
+   yang sudah baku pada template. Setiap item tambahan TIDAK diberi huruf
+   manual — biarkan Word yang menomori otomatis (b., c., dst.) sesuai
+   pengaturan list pada template. Antar item diberi jarak 1 baris kosong.
+   ========================================================================= */
+function createRujukanItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Rujukan</label>
+            <input type="text" name="rujukan_item[]" value="${escapeHtml(text)}" placeholder="Contoh: Surat Telegram Kapolri Nomor ST/123/VII/2026" oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeRujukanItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addRujukanItem(text = '') {
+    const list = document.getElementById('rujukan_list');
+    const item = createRujukanItem(text);
+    list.appendChild(item);
+    updateRujukanButtons();
+    updatePreview();
+}
+
+function removeRujukanItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateRujukanButtons();
+        updatePreview();
+    }
+}
+
+function updateRujukanButtons() {
+    const items = document.querySelectorAll('#rujukan_list .dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function renderRujukanField() {
+    const items = Array.from(document.querySelectorAll('input[name="rujukan_item[]"]'))
+        .map(el => el.value.trim())
+        .filter(value => value !== '');
+
+    let html;
+    if (items.length === 0) {
+        html = '<p>…</p>';
+    } else {
+        html = items
+            .map((value, idx) => {
+                const isLast = idx === items.length - 1;
+                return `<p>${escapeHtml(value)}${isLast ? '' : '<br>'}</p>`;
+            })
+            .join('');
+    }
+
+    document.getElementById('prev_rujukan').innerHTML = html;
+    document.getElementById('rujukan_raw').value = html;
+}
+
+/* =========================================================================
+   Tembusan — daftar tambah/hapus, ditampilkan sebagai daftar bernomor.
+   ========================================================================= */
+function createTembusanItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Tembusan</label>
+            <input type="text" name="tembusan_item[]" value="${escapeHtml(text)}" placeholder="Contoh: Wakapolda Sulsel" oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeTembusanItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addTembusanItem(text = '') {
+    const list = document.getElementById('tembusan_list');
+    const item = createTembusanItem(text);
+    list.appendChild(item);
+    updateTembusanButtons();
+    updatePreview();
+}
+
+function removeTembusanItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateTembusanButtons();
+        updatePreview();
+    }
+}
+
+function updateTembusanButtons() {
+    const items = document.querySelectorAll('#tembusan_list .dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function renderTembusanField() {
+    const items = Array.from(document.querySelectorAll('input[name="tembusan_item[]"]'))
+        .map(el => el.value.trim())
+        .filter(value => value !== '');
+    const html = items.length
+        ? `<ol class="dasar-list">${items.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ol>`
+        : '<p>…</p>';
+
+    document.getElementById('prev_tembusan').innerHTML = html;
+    document.getElementById('tembusan_raw').value = html;
+}
+
 /* =========================================================================
    Live Preview — dipanggil dari oninput (field biasa) & change:data (CKEditor)
    ========================================================================= */
@@ -237,16 +367,28 @@ function updatePreview() {
     setPlainText('prev_nama', document.getElementById('nama').value);
     setPlainText('prev_pangkat_nrp', document.getElementById('pangkat_nrp').value);
 
+    // Field daftar tambah/hapus
+    renderRujukanField();
+    renderTembusanField();
+
     // Field rich text -> innerHTML dari CKEditor (agar bold/italic/list ikut tampil)
-    setRichHtml('prev_rujukan', 'rujukan');
     setRichHtml('prev_isi', 'isi');
-    setRichHtml('prev_tembusan', 'tembusan');
 }
 
 function setPlainText(previewId, value) {
     const el = document.getElementById(previewId);
     el.textContent = value.trim() !== '' ? value : '…';
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelectorAll('#rujukan_list .dasar-item').length === 0) {
+        addRujukanItem();
+    }
+    if (document.querySelectorAll('#tembusan_list .dasar-item').length === 0) {
+        addTembusanItem();
+    }
+    updatePreview();
+});
 
 function setRichHtml(previewId, fieldName) {
     const el = document.getElementById(previewId);

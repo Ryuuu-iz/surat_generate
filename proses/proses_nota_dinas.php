@@ -25,12 +25,12 @@ $data = [
     'kepada'      => ambil('kepada'),
     'dari'        => ambil('dari'),
     'hal'         => ambil('hal'),
-    'rujukan'     => ambil('rujukan'),     // HTML dari CKEditor
+    'rujukan'     => ambil('rujukan'),     // HTML dari daftar tambah/hapus rujukan
     'isi'         => ambil('isi'),         // HTML dari CKEditor
-    'tembusan'    => ambil('tembusan'),    // HTML dari CKEditor
     'jabatan'     => ambil('jabatan'),
     'nama'        => ambil('nama'),
     'pangkat_nrp' => ambil('pangkat_nrp'),
+    'tembusan'    => ambil('tembusan'),    // HTML dari daftar tambah/hapus tembusan
 ];
 
 $format_output = ambil('format_output') === 'pdf' ? 'pdf' : 'rtf';
@@ -191,10 +191,10 @@ $rtfValues = [
     'hal'         => escapeRtfPlainText($data['hal']),
     'rujukan'     => htmlToRtf($data['rujukan']),
     'isi'         => htmlToRtf($data['isi']),
-    'tembusan'    => htmlToRtf($data['tembusan']),
     'jabatan'     => escapeRtfPlainText($data['jabatan']),
     'nama'        => escapeRtfPlainText($data['nama']),
     'pangkat_nrp' => escapeRtfPlainText($data['pangkat_nrp']),
+    'tembusan'    => htmlToRtf($data['tembusan']),
 ];
 
 // =====================================================================

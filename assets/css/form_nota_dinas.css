@@ -95,6 +95,59 @@ body {
 }
 .btn-download:hover { background: #1a5fd0; }
 
+.list-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+.dasar-item {
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8fafc;
+}
+.dasar-item .personnel-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.dasar-item .personnel-row label {
+    font-size: 12px;
+    color: #33475b;
+    margin-bottom: 2px;
+}
+.dasar-item .personnel-row input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.dasar-item .dasar-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+.dasar-item button.remove-dasar {
+    padding: 6px 10px;
+    border: 1px solid #d9534f;
+    background: #fff;
+    color: #d9534f;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.dasar-item button.remove-dasar:hover {
+    background: #fbeaea;
+}
+.dasar-list {
+    margin: 0;
+    padding-left: 18px;
+}
+.dasar-list li {
+    margin-bottom: 8px;
+}
+
 /* ============ LIVE PREVIEW (65%) ============ */
 .preview-column {
     width: 65%;
@@ -251,4 +304,4 @@ body {
 .tembusan-box .isi-tembusan ul {
     margin: 0 0 0 18px;
     padding: 0;
-}
+}   
