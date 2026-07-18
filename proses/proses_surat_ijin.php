@@ -37,6 +37,7 @@ $data = [
     'jabatan_ttd'   => ambil('jabatan_ttd'),
     'nama_ttd'      => ambil('nama_ttd'),
     'pangkat_nrp'   => ambil('pangkat_nrp'),
+    'tembusan'      => ambil('tembusan'),      // HTML dari daftar tambah/hapus tembusan
 ];
 
 $format_output = ambil('format_output') === 'pdf' ? 'pdf' : 'rtf';
@@ -87,7 +88,7 @@ function escapeRtfPlainText($text) {
  * saat dibuka di Microsoft Word.
  * -----------------------------------------------------------------
  */
-function htmlToRtf($html) {
+function htmlToRtf($html, $autoNumbered = true) {
     if (trim($html) === '') {
         return '';
     }
@@ -96,14 +97,25 @@ function htmlToRtf($html) {
 
     // -----------------------------------------------------------------
     // 2.1. Proses daftar bernomor <ol><li>...</li></ol> -> "1.\tab teks\par"
+    //      Param $autoNumbered:
+    //        true  -> nomor ditulis manual oleh PHP (default, dipakai untuk
+    //                 field CKEditor biasa: alasan, pengikut, catatan)
+    //        false -> nomor TIDAK ditulis manual, karena paragraf tujuan pada
+    //                 template RTF (tembusan) sudah memiliki numbering
+    //                 otomatis (\ls2) sehingga tiap \par otomatis diberi
+    //                 nomor urut oleh Word. Dipakai khusus untuk tembusan.
     // -----------------------------------------------------------------
-    $html = preg_replace_callback('/<ol[^>]*>(.*?)<\/ol>/is', function ($m) {
+    $html = preg_replace_callback('/<ol[^>]*>(.*?)<\/ol>/is', function ($m) use ($autoNumbered) {
         $itemsHtml = $m[1];
         $counter = 1;
-        $itemsHtml = preg_replace_callback('/<li[^>]*>(.*?)<\/li>/is', function ($li) use (&$counter) {
-            $marker = "\x01NUM:" . $counter . "\x02";
-            $counter++;
-            return $marker . $li[1] . "\x03LIEND\x02";
+        $itemsHtml = preg_replace_callback('/<li[^>]*>(.*?)<\/li>/is', function ($li) use (&$counter, $autoNumbered) {
+            if ($autoNumbered) {
+                $marker = "\x01NUM:" . $counter . "\x02";
+                $counter++;
+                return $marker . $li[1] . "\x03LIEND\x02";
+            }
+            // Tanpa nomor manual: biarkan template yang menomori otomatis
+            return $li[1] . "\x03LIEND\x02";
         }, $itemsHtml);
         return $itemsHtml;
     }, $html);
@@ -207,6 +219,7 @@ $rtfValues = [
     'jabatan_ttd'   => escapeRtfPlainText($data['jabatan_ttd']),
     'nama_ttd'      => escapeRtfPlainText($data['nama_ttd']),
     'pangkat_nrp'   => escapeRtfPlainText($data['pangkat_nrp']),
+    'tembusan'      => htmlToRtf($data['tembusan'], false), // false = tanpa nomor manual, karena template sudah auto-numbering
 ];
 
 // =====================================================================

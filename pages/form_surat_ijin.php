@@ -119,6 +119,13 @@
             </div>
 
             <div class="field-group">
+                <label for="tembusan">Tembusan</label>
+                <div class="list-field" id="tembusan_list"></div>
+                <textarea name="tembusan" id="tembusan_raw" style="display:none;"></textarea>
+                <button type="button" class="btn-download" style="width:auto; padding:10px 12px; margin:8px 0 0 0;" onclick="addTembusanItem()">+ Tambah Tembusan</button>
+            </div>
+
+            <div class="field-group">
                 <label>Format Unduhan</label>
                 <div class="format-choice">
                     <label><input type="radio" name="format_output" value="rtf" checked> Tetap Word (.rtf)</label>
@@ -267,16 +274,10 @@
                 </div>
             </div>
 
-            <!-- Tembusan (tetap/statis, sudah baku dalam template) -->
+            <!-- Tembusan -->
             <div class="tembusan-box">
                 <div class="judul-tembusan">Tembusan:</div>
-                <div class="isi-tembusan">
-                    <ol>
-                        <li>Kapolda</li>
-                        <li>Irwasda Polda Sulsel</li>
-                        <li>Kabid Propam Polda Sulsel</li>
-                    </ol>
-                </div>
+                <div class="isi-tembusan" id="prev_tembusan"><p>…</p></div>
             </div>
 
         </div>
@@ -322,6 +323,72 @@ function syncHiddenTextarea(fieldName) {
     }
 }
 
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/* =========================================================================
+   Tembusan — daftar tambah/hapus, ditampilkan sebagai daftar bernomor.
+   ========================================================================= */
+function createTembusanItem(text = '') {
+    const item = document.createElement('div');
+    item.className = 'dasar-item';
+    item.innerHTML = `
+        <div class="personnel-row">
+            <label>Tembusan</label>
+            <input type="text" name="tembusan_item[]" value="${escapeHtml(text)}" placeholder="Contoh: Kapolda" oninput="updatePreview()">
+        </div>
+        <div class="dasar-actions">
+            <button type="button" class="remove-dasar" onclick="removeTembusanItem(this)">Hapus</button>
+        </div>
+    `;
+    return item;
+}
+
+function addTembusanItem(text = '') {
+    const list = document.getElementById('tembusan_list');
+    const item = createTembusanItem(text);
+    list.appendChild(item);
+    updateTembusanButtons();
+    updatePreview();
+}
+
+function removeTembusanItem(button) {
+    const item = button.closest('.dasar-item');
+    if (item) {
+        item.remove();
+        updateTembusanButtons();
+        updatePreview();
+    }
+}
+
+function updateTembusanButtons() {
+    const items = document.querySelectorAll('#tembusan_list .dasar-item');
+    items.forEach((item, index) => {
+        const btn = item.querySelector('.remove-dasar');
+        if (btn) {
+            btn.style.display = index === 0 && items.length === 1 ? 'none' : 'inline-flex';
+        }
+    });
+}
+
+function renderTembusanField() {
+    const items = Array.from(document.querySelectorAll('input[name="tembusan_item[]"]'))
+        .map(el => el.value.trim())
+        .filter(value => value !== '');
+    const html = items.length
+        ? `<ol class="dasar-list">${items.map(value => `<li>${escapeHtml(value)}</li>`).join('')}</ol>`
+        : '<p>…</p>';
+
+    document.getElementById('prev_tembusan').innerHTML = html;
+    document.getElementById('tembusan_raw').value = html;
+}
+
 /* =========================================================================
    Live Preview — dipanggil dari oninput (field biasa) & change:data (CKEditor)
    ========================================================================= */
@@ -345,6 +412,9 @@ function updatePreview() {
     setRichHtml('prev_alasan', 'alasan');
     setRichHtml('prev_pengikut', 'pengikut');
     setRichHtml('prev_catatan', 'catatan');
+
+    // Field daftar tambah/hapus
+    renderTembusanField();
 }
 
 function setPlainText(previewId, value) {
@@ -359,6 +429,12 @@ function setRichHtml(previewId, fieldName) {
         el.innerHTML = data.trim() !== '' ? data : '<p>…</p>';
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelectorAll('#tembusan_list .dasar-item').length === 0) {
+        addTembusanItem();
+    }
+});
 </script>
 
 </body>
