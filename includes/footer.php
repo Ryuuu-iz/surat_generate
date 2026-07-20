@@ -6,7 +6,7 @@
             Bidang Teknologi dan Komunikasi &mdash; Sistem Pembuatan Surat Administrasi
         </div>
         <div class="site-footer__meta">
-            &copy; <?php echo $tahun; ?> Polda Sulsel &times; KKN-P UMI 77. All right reserved.
+            &copy; <?php echo $tahun; ?> Polda Sulsel &times; KKN-P UMI 77. All rights reserved.
         </div>
     </div>
 </footer>
