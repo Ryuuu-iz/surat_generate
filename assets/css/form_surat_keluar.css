@@ -1,0 +1,296 @@
+/* =========================================================================
+   form_surat_keluar.css
+   Mengikuti pola yang sama dengan form_surat_perintah.css & form_nota_dinas.css
+   ========================================================================= */
+
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #eef0f2;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* ============ KOLOM KIRI : FORM (35%) ============ */
+.form-column {
+    width: 35%;
+    min-width: 340px;
+    background: #ffffff;
+    padding: 24px;
+    overflow-y: auto;
+    max-height: 100vh;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+}
+
+.form-column h2 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 4px;
+    color: #1f2d3d;
+}
+.form-column p.subtitle {
+    font-size: 12px;
+    color: #7a8896;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.field-group {
+    margin-bottom: 18px;
+}
+.field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #33475b;
+    margin-bottom: 6px;
+}
+.field-group input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.field-group input[type="text"]:focus {
+    outline: none;
+    border-color: #3a6df0;
+}
+
+.format-choice {
+    display: flex;
+    gap: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    padding: 10px;
+    background: #f8fafc;
+}
+.format-choice label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #33475b;
+    cursor: pointer;
+}
+
+.btn-download {
+    width: 100%;
+    padding: 12px;
+    background: #1f6feb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+}
+.btn-download:hover { background: #1a5fd0; }
+
+/* --- Daftar tambah/hapus (Rujukan / Tembusan) --- */
+.list-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+}
+.dasar-item {
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 12px;
+    background: #f8fafc;
+}
+.dasar-item .personnel-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.dasar-item .personnel-row label {
+    font-size: 12px;
+    color: #33475b;
+    margin-bottom: 2px;
+}
+.dasar-item .personnel-row input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.dasar-item .dasar-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+.dasar-item button.remove-dasar {
+    padding: 6px 10px;
+    border: 1px solid #d9534f;
+    background: #fff;
+    color: #d9534f;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.dasar-item button.remove-dasar:hover {
+    background: #fbeaea;
+}
+.dasar-list {
+    margin: 0;
+    padding-left: 18px;
+}
+.dasar-list li {
+    margin-bottom: 8px;
+}
+
+/* ============ KOLOM KANAN : LIVE PREVIEW (65%) ============ */
+.preview-column {
+    width: 65%;
+    background: #4a4f57; /* abu-abu gelap */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.paper {
+    width: 21cm;
+    min-height: 29.7cm;
+    background: #ffffff;
+    padding: 2cm 2cm 2cm 2.5cm;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+    font-family: 'Arial MT', Arial, sans-serif;
+    font-size: 12pt;
+    line-height: 1.35;
+    color: #000;
+}
+
+/* --- Kop Surat --- */
+.kop-surat {
+    text-align: center;
+    margin-bottom: 4px;
+}
+.kop-surat .kop-text .line1,
+.kop-surat .kop-text .line2 {
+    font-weight: normal;
+    font-size: 13pt;
+    text-transform: uppercase;
+}
+.kop-surat .alamat-line {
+    font-size: 10pt;
+    text-decoration: underline;
+    margin-top: 2px;
+}
+
+/* --- Tanggal (kanan atas) --- */
+.tanggal-surat {
+    text-align: right;
+    margin: 10px 0 14px 0;
+}
+
+/* --- Nomor / Klasifikasi / Lampiran / Hal --- */
+.header-info {
+    margin-bottom: 12px;
+}
+.header-info .row-field {
+    display: flex;
+    margin-bottom: 2px;
+}
+.header-info .row-field .label {
+    width: 90px;
+    flex-shrink: 0;
+}
+.header-info .row-field .titik-dua {
+    width: 16px;
+    flex-shrink: 0;
+}
+.header-info .row-field .isi {
+    flex-grow: 1;
+}
+
+/* --- Yth. / di / tempat --- */
+.yth-block {
+    margin-bottom: 14px;
+}
+.yth-block .yth-label {
+    display: inline-block;
+    width: 20px;
+    vertical-align: top;
+}
+.yth-block .yth-isi {
+    display: inline-block;
+    width: calc(100% - 24px);
+    vertical-align: top;
+}
+.yth-block .yth-isi p { margin: 0 0 4px 0; }
+.yth-block .yth-isi ul, .yth-block .yth-isi ol { margin: 0 0 4px 0; padding: 0 0 0 20px; }
+.yth-block .yth-di {
+    margin-left: 20px;
+}
+.yth-block .yth-tempat {
+    margin-left: 20px;
+}
+
+/* --- Blok bernomor (Rujukan / Isi / Koordinasi / Penutup) --- */
+.numbered-block {
+    display: flex;
+    margin-bottom: 10px;
+}
+.numbered-block .nomor-urut {
+    width: 22px;
+    flex-shrink: 0;
+}
+.numbered-block .konten {
+    flex-grow: 1;
+}
+.numbered-block .konten p { margin: 0 0 4px 0; }
+.numbered-block .konten ul, .numbered-block .konten ol { margin: 0 0 4px 18px; padding: 0; }
+
+.rujukan-label { font-weight: normal; margin-bottom: 4px; }
+.rujukan-sub {
+    display: flex;
+    margin-left: 18px;
+    margin-bottom: 4px;
+}
+.rujukan-sub .huruf { width: 22px; flex-shrink: 0; }
+.rujukan-sub .konten { flex-grow: 1; }
+.rujukan-sub .konten p { margin: 0 0 4px 0; }
+.rujukan-sub .konten ul, .rujukan-sub .konten ol { margin: 0 0 4px 18px; padding: 0; }
+
+/* --- Blok tanda tangan --- */
+.blok-penutup {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.kolom-ttd {
+    width: 60%;
+    text-align: center;
+}
+.an-ttd { margin-bottom: 4px; }
+.jabatan-ttd { margin-bottom: 4px; }
+.ruang-ttd { height: 70px; }
+.nama-ttd { font-weight: normal; text-decoration: underline; }
+.pangkat-ttd {}
+
+.tembusan-box {
+    margin-top: 24px;
+    font-size: 11pt;
+}
+.tembusan-box .judul-tembusan {
+    font-weight: normal;
+    margin-bottom: 4px;
+}
+.tembusan-box .isi-tembusan ol,
+.tembusan-box .isi-tembusan ul {
+    margin: 0 0 0 18px;
+    padding: 0;
+}
