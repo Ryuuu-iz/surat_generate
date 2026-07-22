@@ -124,40 +124,48 @@
     <div class="preview-column">
         <div class="paper">
 
-            <!-- Kop Surat -->
-            <div class="kop-surat">
-                <div class="kop-text">
-                    <div class="line1">Kepolisian Negara Republik Indonesia</div>
-                    <div class="line2">Daerah Sulawesi Selatan</div>
+            <!-- Kop Surat + Tanggal (sejajar, tanggal mentok kanan) -->
+            <div class="kop-header-row">
+                <div class="kop-surat">
+                    <img src="../assets/img/logo/logo-polri-bnw.png" alt="Logo Polri" class="logo-kop">
+                    <div class="kop-text-wrap">
+                        <div class="kop-text">
+                            <div class="line1">Kepolisian Negara Republik Indonesia</div>
+                            <div class="line2">Daerah Sulawesi Selatan</div>
+                        </div>
+                        <div class="alamat-line">Jalan P. Kemerdekaan Km. 16 Makassar 90241</div>
+                    </div>
                 </div>
-                <div class="alamat-line">Jalan P. Kemerdekaan Km. 16 Makassar 90241</div>
+
+                <div class="tanggal-surat"><span id="prev_tempat">…</span>, <span id="prev_tanggal">…</span></div>
             </div>
 
-            <!-- Tanggal -->
-            <div class="tanggal-surat"><span id="prev_tempat">…</span>, <span id="prev_tanggal">…</span></div>
+            <!-- Nomor / Klasifikasi / Lampiran / Hal, dengan "Kepada" sejajar baris "Hal" di sebelah kanan -->
+            <div class="info-kepada-row">
+                <div class="header-info">
+                    <div class="row-field">
+                        <div class="label">Nomor</div>
+                        <div class="titik-dua">:</div>
+                        <div class="isi" id="prev_nomor">…</div>
+                    </div>
+                    <div class="row-field">
+                        <div class="label">Klasifikasi</div>
+                        <div class="titik-dua">:</div>
+                        <div class="isi" id="prev_klasifikasi">…</div>
+                    </div>
+                    <div class="row-field">
+                        <div class="label">Lampiran</div>
+                        <div class="titik-dua">:</div>
+                        <div class="isi" id="prev_lampiran">…</div>
+                    </div>
+                    <div class="row-field">
+                        <div class="label">Hal</div>
+                        <div class="titik-dua">:</div>
+                        <div class="isi" id="prev_hal">…</div>
+                    </div>
+                </div>
 
-            <!-- Nomor / Klasifikasi / Lampiran / Hal -->
-            <div class="header-info">
-                <div class="row-field">
-                    <div class="label">Nomor</div>
-                    <div class="titik-dua">:</div>
-                    <div class="isi" id="prev_nomor">…</div>
-                </div>
-                <div class="row-field">
-                    <div class="label">Klasifikasi</div>
-                    <div class="titik-dua">:</div>
-                    <div class="isi" id="prev_klasifikasi">…</div>
-                </div>
-                <div class="row-field">
-                    <div class="label">Lampiran</div>
-                    <div class="titik-dua">:</div>
-                    <div class="isi" id="prev_lampiran">…</div>
-                </div>
-                <div class="row-field">
-                    <div class="label">Hal</div>
-                    <div class="titik-dua">:</div>
-                    <div class="isi" id="prev_hal">…</div>
-                </div>
+                <div class="kepada-label">Kepada</div>
             </div>
 
             <!-- Yth -->
@@ -198,21 +206,19 @@
                 <div class="konten">Demikian untuk menjadi maklum.</div>
             </div>
 
-            <!-- Blok penutup: ttd -->
+            <!-- Blok penutup: Tembusan (kiri) & ttd (kanan), sejajar di bawah -->
             <div class="blok-penutup">
+                <div class="tembusan-box">
+                    <div class="judul-tembusan">Tembusan:</div>
+                    <div class="isi-tembusan" id="prev_tembusan"><p>…</p></div>
+                </div>
                 <div class="kolom-ttd">
-                    <div class="an-ttd">a.n. Kepala Kepolisian Daerah Sulawesi Selatan</div>
+                    <div class="an-ttd"><span class="an-prefix">a.n.</span> Kepala Kepolisian Daerah Sulawesi Selatan</div>
                     <div class="jabatan-ttd" id="prev_jabatan">…</div>
                     <div class="ruang-ttd"></div>
                     <div class="nama-ttd" id="prev_nama_ttd">…</div>
                     <div class="pangkat-ttd" id="prev_pangkat_nrp">…</div>
                 </div>
-            </div>
-
-            <!-- Tembusan -->
-            <div class="tembusan-box">
-                <div class="judul-tembusan">Tembusan:</div>
-                <div class="isi-tembusan" id="prev_tembusan"><p>…</p></div>
             </div>
 
         </div>

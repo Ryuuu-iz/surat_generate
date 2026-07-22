@@ -1,8 +1,3 @@
-/* =========================================================================
-   form_surat_keluar.css
-   Mengikuti pola yang sama dengan form_surat_perintah.css & form_nota_dinas.css
-   ========================================================================= */
-
 * { box-sizing: border-box; }
 body {
     margin: 0;
@@ -165,7 +160,7 @@ body {
     width: 21cm;
     min-height: 29.7cm;
     background: #ffffff;
-    padding: 2cm 2cm 2cm 2.5cm;
+    padding: 3cm 2cm 1.5cm 3cm; /* atas 3cm, kanan 2cm, bawah 1,5cm, kiri 3cm */
     box-shadow: 0 4px 18px rgba(0,0,0,0.45);
     font-family: 'Arial MT', Arial, sans-serif;
     font-size: 12pt;
@@ -173,32 +168,63 @@ body {
     color: #000;
 }
 
-/* --- Kop Surat --- */
+/* --- Kop Surat + Tanggal (satu baris, tanggal sejajar baris alamat & mentok kanan) --- */
+.kop-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 6px;
+}
 .kop-surat {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+}
+.kop-surat .logo-kop {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
     margin-bottom: 4px;
+}
+.kop-surat .kop-text-wrap {
+    width: fit-content;
+    text-align: left;
 }
 .kop-surat .kop-text .line1,
 .kop-surat .kop-text .line2 {
-    font-weight: normal;
     font-size: 13pt;
     text-transform: uppercase;
+    white-space: nowrap;
 }
-.kop-surat .alamat-line {
-    font-size: 10pt;
+.kop-surat .kop-text .line2 {
+    text-align: center;
+}
+.alamat-line {
+    font-size: 13pt;
     text-decoration: underline;
     margin-top: 2px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
 }
 
-/* --- Tanggal (kanan atas) --- */
+/* --- Tanggal (kanan, sejajar baris alamat) --- */
 .tanggal-surat {
     text-align: right;
-    margin: 10px 0 14px 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 12px;
 }
 
-/* --- Nomor / Klasifikasi / Lampiran / Hal --- */
-.header-info {
+/* --- Nomor / Klasifikasi / Lampiran / Hal, + "Kepada" sejajar baris "Hal" di kanan --- */
+.info-kepada-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 12px;
+}
+.header-info {
+    margin-bottom: 0;
 }
 .header-info .row-field {
     display: flex;
@@ -214,6 +240,12 @@ body {
 }
 .header-info .row-field .isi {
     flex-grow: 1;
+}
+
+/* --- Kepada (sejajar dengan "Hal", di sebelah kanan) --- */
+.kepada-label {
+    margin: 0 0 2px 0;
+    white-space: nowrap;
 }
 
 /* --- Yth. / di / tempat --- */
@@ -265,25 +297,34 @@ body {
 .rujukan-sub .konten p { margin: 0 0 4px 0; }
 .rujukan-sub .konten ul, .rujukan-sub .konten ol { margin: 0 0 4px 18px; padding: 0; }
 
-/* --- Blok tanda tangan --- */
+/* --- Blok tanda tangan + Tembusan (satu baris, sejajar di bawah) --- */
 .blok-penutup {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: flex-end;
     margin-top: 20px;
 }
 .kolom-ttd {
     width: 60%;
     text-align: center;
 }
-.an-ttd { margin-bottom: 4px; }
+.an-ttd { margin-bottom: 4px; text-transform: uppercase; }
+.an-ttd .an-prefix { text-transform: none; }
 .jabatan-ttd { margin-bottom: 4px; }
 .ruang-ttd { height: 70px; }
-.nama-ttd { font-weight: normal; text-decoration: underline; }
+.nama-ttd {
+    font-weight: normal;
+    text-decoration: underline;
+    border-top: 1px solid #000;
+    padding-top: 4px;
+    display: inline-block;
+}
 .pangkat-ttd {}
 
 .tembusan-box {
-    margin-top: 24px;
+    width: 35%;
     font-size: 11pt;
+    align-self: flex-end;
 }
 .tembusan-box .judul-tembusan {
     font-weight: normal;
