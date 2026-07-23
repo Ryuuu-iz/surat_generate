@@ -292,6 +292,10 @@ body {
     margin-left: 18px;
     margin-bottom: 4px;
 }
+/* Jarak 1x spasi (satu baris kosong) antar huruf rujukan, mis. dari a. ke b. */
+.rujukan-sub + .rujukan-sub {
+    margin-top: 1em;
+}
 .rujukan-sub .huruf { width: 22px; flex-shrink: 0; }
 .rujukan-sub .konten { flex-grow: 1; }
 .rujukan-sub .konten p { margin: 0 0 4px 0; }

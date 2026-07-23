@@ -140,7 +140,7 @@
                 <div class="tanggal-surat"><span id="prev_tempat">…</span>, <span id="prev_tanggal">…</span></div>
             </div>
 
-            <!-- Nomor / Klasifikasi / Lampiran / Hal, dengan "Kepada" sejajar baris "Hal" di sebelah kanan -->
+            <!-- Nomor / Klasifikasi / Lampiran / Hal, dengan "Kepada" -->
             <div class="info-kepada-row">
                 <div class="header-info">
                     <div class="row-field">
@@ -181,10 +181,7 @@
                 <div class="nomor-urut">1.</div>
                 <div class="konten">
                     <div class="rujukan-label">Rujukan:</div>
-                    <div class="rujukan-sub">
-                        <div class="huruf">a.</div>
-                        <div class="konten" id="prev_rujukan"><p>…</p></div>
-                    </div>
+                    <div id="prev_rujukan"></div>
                 </div>
             </div>
 
@@ -319,22 +316,69 @@ function updateRujukanButtons() {
     });
 }
 
+// Huruf urut a, b, c, ... z, aa, ab, ... (jaga-jaga kalau rujukan > 26 item)
+function rujukanLetter(index) {
+    let n = index + 1;
+    let letter = '';
+    while (n > 0) {
+        const sisa = (n - 1) % 26;
+        letter = String.fromCharCode(97 + sisa) + letter;
+        n = Math.floor((n - 1) / 26);
+    }
+    return letter;
+}
+
 function renderRujukanField() {
     const items = Array.from(document.querySelectorAll('input[name="rujukan_item[]"]'))
         .map(el => el.value.trim())
         .filter(value => value !== '');
 
-    let html;
+    let previewHtml;
+    let rawHtml;
+
     if (items.length === 0) {
-        html = '<p>…</p>';
+        previewHtml = `
+            <div class="rujukan-sub">
+                <div class="huruf">a.</div>
+                <div class="konten"><p>…</p></div>
+            </div>`;
+        rawHtml = '<p>…</p>';
     } else {
-        html = items
-            .map(value => `<p>${escapeHtml(value)}</p>`)
-            .join('');
+        const previewParts = [];
+        const rawParts = [];
+
+        items.forEach((value, index) => {
+            const huruf = rujukanLetter(index);
+
+            previewParts.push(`
+                <div class="rujukan-sub">
+                    <div class="huruf">${huruf}.</div>
+                    <div class="konten"><p>${escapeHtml(value)}</p></div>
+                </div>`);
+
+            // Jarak 1x spasi ke huruf berikutnya dibuat lewat "spasi SEBELUM
+            // paragraf" (\sb di RTF) pada item ke-2 dst, bukan spasi di
+            // tengah/akhir paragraf sebelumnya. \sb ditaruh persis di AWAL
+            // paragraf item ini -> posisi yang sah menurut RTF, sehingga
+            // tidak memicu Word menganggapnya baris tambahan di tengah
+            // paragraf (yang sebelumnya menyebabkan efek jenjang/stretch
+            // dari perataan justify).
+            const isFirst = index === 0;
+            rawParts.push(isFirst
+                ? `<p>${escapeHtml(value)}</p>`
+                : `<p class="ruj-sp-before">${escapeHtml(value)}</p>`);
+        });
+
+        // Tambahan: 1x spasi kosong juga SETELAH huruf terakhir
+        // (sebelum lanjut ke bagian "2. Isi").
+        rawParts.push('<p class="ruj-sp-tail"></p>');
+
+        previewHtml = previewParts.join('');
+        rawHtml = rawParts.join('');
     }
 
-    document.getElementById('prev_rujukan').innerHTML = html;
-    document.getElementById('rujukan_raw').value = html;
+    document.getElementById('prev_rujukan').innerHTML = previewHtml;
+    document.getElementById('rujukan_raw').value = rawHtml;
 }
 
 /* =========================================================================

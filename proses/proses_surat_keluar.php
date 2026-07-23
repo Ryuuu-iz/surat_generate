@@ -120,6 +120,32 @@ function htmlToRtf($html) {
     }, $html);
 
     // -----------------------------------------------------------------
+    // 2.2b. <p class="ruj-sp-before">...</p> -> paragraf ini diberi jarak
+    //       SEBELUM-nya (RTF \sb) alih-alih paragraf/baris baru terpisah.
+    //       Dipakai pada item Rujukan ke-2 dst supaya ada 1x spasi kosong
+    //       dari huruf sebelumnya (a. -> b.) TANPA memicu Word menghitung-
+    //       nya sebagai item auto-numbering baru (auto-numbering huruf
+    //       sudah bawaan dari template Word, \ls1). \sb DITARUH DI AWAL
+    //       paragraf (sebelum isi teksnya) karena itu satu-satunya posisi
+    //       yang sah untuk kontrol paragraf RTF -- kalau ditaruh di
+    //       tengah/akhir paragraf (setelah teksnya), Word bisa salah
+    //       menafsirkannya sebagai baris tambahan, yang memicu efek
+    //       "jenjang"/stretch dari perataan justify (\qj).
+    //       Harus diproses SEBELUM aturan <p> generik di bawah.
+    // -----------------------------------------------------------------
+    $html = preg_replace_callback('/<p\s+class="ruj-sp-before"[^>]*>(.*?)<\/p>/is', function ($m) {
+        return "\x01PARSPACEBEFORE\x02" . $m[1] . "\x01PAREND\x02";
+    }, $html);
+
+    // -----------------------------------------------------------------
+    // 2.2c. <p class="ruj-sp-tail"></p> -> satu baris kosong sungguhan
+    //       SETELAH huruf rujukan yang terakhir (sebelum lanjut ke bagian
+    //       "2. Isi"). Tidak perlu \pard\ls1 lagi di sini karena tidak ada
+    //       item huruf lain sesudahnya yang perlu dilanjutkan.
+    // -----------------------------------------------------------------
+    $html = preg_replace('/<p\s+class="ruj-sp-tail"[^>]*>\s*<\/p>/is', "\x01PARTAIL\x02", $html);
+
+    // -----------------------------------------------------------------
     // 2.3. Tag inline formatting -> token unik (aman dari escaping nanti)
     // -----------------------------------------------------------------
     $map = [
@@ -167,6 +193,25 @@ function htmlToRtf($html) {
                 case 'U_OFF':      $rtf .= '\\ulnone '; break;
                 case 'LINEBREAK':  $rtf .= '\\line ';   break;
                 case 'PAREND':     $rtf .= '\\par ';    break;
+                // \contextualspace pada style s30 (dipakai paragraf daftar
+                // Rujukan) MENYEMBUNYIKAN spasi \sa/\sb antar paragraf yang
+                // masih satu list/style -- override kecil per-paragraf saja
+                // ternyata tidak cukup mengalahkannya. Solusi yang pasti
+                // kelihatan: keluar dulu dari list (\pard biasa, tanpa ls1
+                // & tanpa contextualspace) untuk 1 baris KOSONG sungguhan,
+                // baru \pard lagi untuk masuk balik ke list (\ls1) demi
+                // lanjut ke huruf berikutnya. \pard (bukan \pard\plain)
+                // supaya format karakter (font/ukuran) yang sudah aktif
+                // tidak ikut ter-reset.
+                case 'PARSPACEBEFORE':
+                    $rtf .= '\\pard\\intbl\\ql\\li0\\ri0\\sa0\\sb0\\par '
+                          . '\\pard\\intbl\\qj\\fi-246\\li246\\ri0\\sa240\\ls1\\contextualspace ';
+                    break;
+                // Baris kosong sungguhan setelah huruf terakhir (tidak perlu
+                // \pard\ls1 lagi karena tidak ada item huruf sesudahnya).
+                case 'PARTAIL':
+                    $rtf .= '\\pard\\intbl\\ql\\li0\\ri0\\sa0\\sb0\\par ';
+                    break;
                 case 'BULLET':     $rtf .= '\\bullet \\tab '; break;
                 case 'NUM':        $rtf .= $mm[2] . '.\\tab '; break;
                 default: break;
